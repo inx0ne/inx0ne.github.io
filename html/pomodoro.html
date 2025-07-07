@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>뽀모도로 타이머 - 공부꾸키</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  .timer-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+    background-color: var(--main-color);
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    text-align: center;
+    color: #222;
+  }
+  body.dark .timer-container {
+    background-color: var(--dark-card);
+    color: var(--dark-text);
+  }
+  .time-display {
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+  .status {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+  .session-count {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #666;
+  }
+  body.dark .session-count {
+    color: #aabbee;
+  }
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .controls button {
+    background-color: var(--sub-color);
+    border: none;
+    padding: 1rem 1.8rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .controls button:hover {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+  }
+  body.dark .controls button {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+  body.dark .controls button:hover {
+    background-color: var(--dark-hover);
+  }
+  .controls button svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+  }
+  .time-settings {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .time-settings label {
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+    color: inherit;
+  }
+  .time-settings input[type=number] {
+    width: 60px;
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1.5px solid #999;
+    text-align: center;
+    margin-top: 0.3rem;
+    transition: border-color 0.3s ease;
+  }
+  .time-settings input[type=number]:focus {
+    outline: none;
+    border-color: #4992C6;
+  }
+  body.dark .time-settings input[type=number] {
+    background-color: var(--dark-bg);
+    border-color: #666;
+    color: var(--dark-text);
+  }
+  body.dark .time-settings input[type=number]:focus {
+    border-color: #84a9d8;
+  }
+  @media (max-width: 480px) {
+    .timer-container {
+      margin: 3rem 1rem;
+      padding: 1.5rem;
+    }
+    .time-display {
+      font-size: 4rem;
+    }
+    .controls button {
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      gap: 0.4rem;
+    }
+    .time-settings {
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .time-settings label {
+      width: 100px;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>공부꾸키</h1>
+  <nav>
+    <a href="index.html" aria-label="홈으로">🏠 홈</a>
+  </nav>
+  <button id="darkToggle" aria-label="다크모드 토글">🌙</button>
+</header>
+
+<div class="timer-container">
+  <div class="time-display" id="time">25:00</div>
+  <div class="status" id="status">작업 중</div>
+  <div class="session-count" id="sessionCount">세션: 0</div>
+
+  <div class="time-settings">
+    <label>
+      작업 시간 (분)
+      <input type="number" id="workInput" min="1" max="180" value="25" />
+    </label>
+    <label>
+      휴식 시간 (분)
+      <input type="number" id="breakInput" min="1" max="60" value="5" />
+    </label>
+  </div>
+
+  <div class="controls">
+    <button id="startBtn" aria-label="시작">
+      ▶️ 시작
+    </button>
+    <button id="pauseBtn" aria-label="일시정지" disabled>
+      ⏸️ 일시정지
+    </button>
+    <button id="resetBtn" aria-label="초기화">
+      🔄 초기화
+    </button>
+  </div>
+</div>
+
+<audio id="alarmSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+
+<script>
+  // 다크모드 복원 및 토글
+  const toggle = document.getElementById("darkToggle");
+  if(localStorage.getItem("theme")==="dark"){
+    document.body.classList.add("dark");
+    toggle.textContent = "☀️";
+  } else {
+    toggle.textContent = "🌙";
+  }
+  toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    const isDark = document.body.classList.contains("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+    toggle.textContent = isDark ? "☀️" : "🌙";
+  });
+
+  // 타이머 변수 및 DOM
+  let workDuration = 25 * 60;
+  let breakDuration = 5 * 60;
+  let timer = workDuration;
+  let interval = null;
+  let isWorking = true;
+  let sessionCount = 0;
+
+  const timeEl = document.getElementById("time");
+  const statusEl = document.getElementById("status");
+  const sessionCountEl = document.getElementById("sessionCount");
+  const startBtn = document.getElementById("startBtn");
+  const pauseBtn = document.getElementById("pauseBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const workInput = document.getElementById("workInput");
+  const breakInput = document.getElementById("breakInput");
+  const alarmSound = document.getElementById("alarmSound");
+
+  function updateDisplay() {
+    let minutes = Math.floor(timer / 60);
+    let seconds = timer % 60;
+    timeEl.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+    statusEl.textContent = isWorking ? "작업 중" : "휴식 중";
+    sessionCountEl.textContent = `세션: ${sessionCount}`;
+  }
+
+  function switchMode() {
+    // 알림음 재생
+    alarmSound.play().catch(() => {
+      // 무음 모드 등에서 오류 방지
+    });
+
+    if(isWorking){
+      sessionCount++;
+    }
+
+    isWorking = !isWorking;
+    timer = isWorking ? workDuration : breakDuration;
+    updateDisplay();
+  }
+
+  function tick() {
+    if(timer > 0){
+      timer--;
+      updateDisplay();
+    } else {
+      switchMode();
+    }
+  }
+
+  startBtn.addEventListener("click", () => {
+    if(interval) return;
+    interval = setInterval(tick, 1000);
+    startBtn.disabled = true;
+    pauseBtn.disabled = false;
+  });
+
+  pauseBtn.addEventListener("click", () => {
+    if(interval){
+      clearInterval(interval);
+      interval = null;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+    }
+  });
+
+  resetBtn.addEventListener("click", () => {
+    clearInterval(interval);
+    interval = null;
+    isWorking = true;
+    timer = workDuration;
+    sessionCount = 0;
+    updateDisplay();
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  });
+
+  function updateDurations() {
+    let workVal = parseInt(workInput.value);
+    let breakVal = parseInt(breakInput.value);
+
+    if(isNaN(workVal) || workVal < 1) workVal = 25;
+    if(isNaN(breakVal) || breakVal < 1) breakVal = 5;
+
+    workDuration = workVal * 60;
+    breakDuration = breakVal * 60;
+
+    clearInterval(interval);
+    interval = null;
+    isWorking = true;
+    timer = workDuration;
+    sessionCount = 0;
+    updateDisplay();
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+  }
+
+  workInput.addEventListener("change", updateDurations);
+  breakInput.addEventListener("change", updateDurations);
+
+  // 초기화 화면 표시
+  updateDisplay();
+</script>
+</body>
+</html>
