@@ -7,48 +7,42 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 🔄 로딩 애니메이션 -->
-  <div id="loader">
-    <div class="spinner"></div>
-  </div>
+  <header>
+    <h1>공부꾸키</h1>
+    <nav>
+      <a href="pomodoro.html">🕒 뽀모도로</a>
+      <a href="ai.html">🤖 AI</a>
+      <a href="focus.html">🎯 집중</a>
+      <a href="habit.html">🌱 해빗</a>
+      <a href="todo.html">📝 투두</a>
+      <a href="book.html">📚 책</a>
+    </nav>
+    <button id="darkToggle">🌙</button>
+  </header>
 
-  <!-- 🌟 실제 본문 콘텐츠 -->
-  <div id="content" style="display: none;">
-    <header>
-      <h1>공부꾸키</h1>
-      <nav>
-        <a href="pomodoro.html">🕒 뽀모도로</a>
-        <a href="ai.html">🤖 AI</a>
-        <a href="focus.html">🎯 집중</a>
-        <a href="habit.html">🌱 해빗</a>
-        <a href="todo.html">📝 투두</a>
-        <a href="book.html">📚 책</a>
-      </nav>
-    </header>
-
-    <main class="container">
-      <button class="tool-button" onclick="location.href='pomodoro.html'">🕒 뽀모도로 타이머</button>
-      <button class="tool-button" onclick="location.href='ai.html'">🤖 AI 어시스턴트</button>
-      <button class="tool-button" onclick="location.href='focus.html'">🎯 집중 타이머</button>
-      <button class="tool-button" onclick="location.href='habit.html'">🌱 해빗 트래커</button>
-      <button class="tool-button" onclick="location.href='todo.html'">📝 투두다이어리</button>
-      <button class="tool-button" onclick="location.href='book.html'">📚 북트래커</button>
-    </main>
-  </div>
+  <main class="container">
+    <button class="tool-button" onclick="location.href='pomodoro.html'">🕒 뽀모도로 타이머</button>
+    <button class="tool-button" onclick="location.href='ai.html'">🤖 AI 어시스턴트</button>
+    <button class="tool-button" onclick="location.href='focus.html'">🎯 집중 타이머</button>
+    <button class="tool-button" onclick="location.href='habit.html'">🌱 해빗 트래커</button>
+    <button class="tool-button" onclick="location.href='todo.html'">📝 투두다이어리</button>
+    <button class="tool-button" onclick="location.href='book.html'">📚 북트래커</button>
+  </main>
 
   <script>
-    // 로딩 후 본문 표시 (1.2초 뒤)
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.getElementById("loader").style.display = "none";
-        const content = document.getElementById("content");
-        content.style.display = "block";
-        content.style.opacity = 0;
-        setTimeout(() => {
-          content.style.transition = "opacity 0.8s ease";
-          content.style.opacity = 1;
-        }, 10);
-      }, 1200); // 1.2초 로딩
+    const toggle = document.getElementById("darkToggle");
+
+    // 초기 설정: localStorage 확인
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark");
+      toggle.textContent = "☀️";
+    }
+
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const isDark = document.body.classList.contains("dark");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+      toggle.textContent = isDark ? "☀️" : "🌙";
     });
   </script>
 </body>
