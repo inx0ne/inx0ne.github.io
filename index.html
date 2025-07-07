@@ -1,75 +1,55 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>공부꾸키</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>공부꾸키</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 로딩 화면 -->
-  <div id="loader">
+  <div id="loading-overlay">
     <div class="spinner"></div>
   </div>
 
-  <!-- 본문 -->
-  <div id="content" style="display:none;">
-    <header>
-      <h1>공부꾸키</h1>
-      <nav>
-        <a href="pomodoro.html" aria-label="뽀모도로 타이머">🕒 뽀모도로</a>
-        <a href="ai.html" aria-label="AI 어시스턴트">🤖 AI</a>
-        <a href="focus.html" aria-label="집중 타이머">🎯 집중</a>
-        <a href="habit.html" aria-label="해빗 트래커">🌱 해빗</a>
-        <a href="todo.html" aria-label="투두 다이어리">📝 투두</a>
-        <a href="book.html" aria-label="북 트래커">📚 책</a>
-      </nav>
-      <button id="darkToggle" aria-label="다크모드 토글">🌙</button>
-    </header>
+  <header>
+    <h1>📚 공부꾸키</h1>
+    <nav>
+      <!-- 여기에 다른 링크들 추가 가능 -->
+    </nav>
+    <button id="darkToggle" aria-label="다크모드 토글">🌙</button>
+  </header>
 
-    <main class="container">
-      <button class="tool-button" onclick="location.href='pomodoro.html'">🕒 뽀모도로 타이머</button>
-      <button class="tool-button" onclick="location.href='ai.html'">🤖 AI 어시스턴트</button>
-      <button class="tool-button" onclick="location.href='focus.html'">🎯 집중 타이머</button>
-      <button class="tool-button" onclick="location.href='habit.html'">🌱 해빗 트래커</button>
-      <button class="tool-button" onclick="location.href='todo.html'">📝 투두다이어리</button>
-      <button class="tool-button" onclick="location.href='book.html'">📚 북트래커</button>
-    </main>
-  </div>
+  <main class="home-main">
+    <h2>✨ 필요한 도구를 선택해보세요!</h2>
+    <div class="button-container">
+      <a href="html/pomodoro.html" class="main-button">🕒 뽀모도로 타이머</a>
+      <a href="html/ai.html" class="main-button">🤖 AI 어시스턴트</a>
+      <a href="html/focus.html" class="main-button">🎧 집중 타이머</a>
+      <a href="html/habit.html" class="main-button">🌱 해빗 트래커</a>
+      <a href="html/todo.html" class="main-button">📔 투두 다이어리</a>
+      <a href="html/book.html" class="main-button">📚 북 트래커</a>
+    </div>
+  </main>
 
-<script>
-  window.addEventListener("load", () => {
-    const loader = document.getElementById("loader");
-    const content = document.getElementById("content");
-    const toggle = document.getElementById("darkToggle");
-
-    // 다크모드 상태 복원
+  <script>
+    // 다크모드 로딩 시 적용
     if (localStorage.getItem("theme") === "dark") {
       document.body.classList.add("dark");
-      toggle.textContent = "☀️";
-    } else {
-      toggle.textContent = "🌙";
+      document.getElementById("darkToggle").textContent = "☀️";
     }
 
-    // 로딩 후 본문 보여주기
-    setTimeout(() => {
-      loader.style.display = "none";
-      content.style.display = "block";
-      content.style.opacity = 0;
-      setTimeout(() => {
-        content.style.transition = "opacity 0.8s ease";
-        content.style.opacity = 1;
-      }, 10);
-    }, 1200);
-
-    // 다크모드 토글 이벤트
-    toggle.addEventListener("click", () => {
+    // 다크모드 토글
+    document.getElementById("darkToggle").addEventListener("click", () => {
       document.body.classList.toggle("dark");
       const isDark = document.body.classList.contains("dark");
       localStorage.setItem("theme", isDark ? "dark" : "light");
-      toggle.textContent = isDark ? "☀️" : "🌙";
+      document.getElementById("darkToggle").textContent = isDark ? "☀️" : "🌙";
     });
-  });
-</script>
+
+    // 로딩 애니메이션 제거
+    window.addEventListener("load", () => {
+      document.getElementById("loading-overlay").style.display = "none";
+    });
+  </script>
 </body>
 </html>
