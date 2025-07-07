@@ -7,43 +7,45 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- 로딩 애니메이션 -->
   <div id="loading-overlay">
     <div class="spinner"></div>
   </div>
 
+  <!-- 상단 툴바 -->
   <header>
     <h1>📚 공부꾸키</h1>
-    <nav>
-      <!-- 여기에 다른 링크들 추가 가능 -->
-    </nav>
+    <nav></nav>
     <button id="darkToggle" aria-label="다크모드 토글">🌙</button>
   </header>
 
+  <!-- 메인 영역 -->
   <main class="home-main">
     <h2>✨ 필요한 도구를 선택해보세요!</h2>
     <div class="button-container">
-      <a href="html/pomodoro.html" class="main-button">🕒 뽀모도로 타이머</a>
-      <a href="html/ai.html" class="main-button">🤖 AI 어시스턴트</a>
-      <a href="html/focus.html" class="main-button">🎧 집중 타이머</a>
-      <a href="html/habit.html" class="main-button">🌱 해빗 트래커</a>
-      <a href="html/todo.html" class="main-button">📔 투두 다이어리</a>
-      <a href="html/book.html" class="main-button">📚 북 트래커</a>
+      <a href="/html/pomodoro.html" class="main-button">🕒 뽀모도로 타이머</a>
+      <a href="/html/ai.html" class="main-button">🤖 AI 어시스턴트</a>
+      <a href="/html/focus.html" class="main-button">🎧 집중 타이머</a>
+      <a href="/html/habit.html" class="main-button">🌱 해빗 트래커</a>
+      <a href="/html/todo.html" class="main-button">📔 투두 다이어리</a>
+      <a href="/html/book.html" class="main-button">📚 북 트래커</a>
     </div>
   </main>
 
+  <!-- 다크모드 및 로딩 스크립트 -->
   <script>
-    // 다크모드 로딩 시 적용
+    // 다크모드 로드 시 적용
+    const toggle = document.getElementById("darkToggle");
     if (localStorage.getItem("theme") === "dark") {
       document.body.classList.add("dark");
-      document.getElementById("darkToggle").textContent = "☀️";
+      toggle.textContent = "☀️";
     }
 
-    // 다크모드 토글
-    document.getElementById("darkToggle").addEventListener("click", () => {
+    toggle.addEventListener("click", () => {
       document.body.classList.toggle("dark");
       const isDark = document.body.classList.contains("dark");
       localStorage.setItem("theme", isDark ? "dark" : "light");
-      document.getElementById("darkToggle").textContent = isDark ? "☀️" : "🌙";
+      toggle.textContent = isDark ? "☀️" : "🌙";
     });
 
     // 로딩 애니메이션 제거
