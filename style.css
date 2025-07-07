@@ -1,0 +1,67 @@
+:root {
+  --main-color: #c8dbef;
+  --sub-color: #deebf7;
+  --hover-color: #b4cce9;
+  --text-color: #333;
+}
+
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: var(--sub-color);
+  color: var(--text-color);
+  transition: background-color 0.4s ease;
+}
+
+header {
+  background-color: var(--main-color);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #444;
+}
+
+nav a {
+  margin-left: 1.2rem;
+  text-decoration: none;
+  color: #444;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #222;
+}
+
+.container {
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+
+.tool-button {
+  background-color: var(--main-color);
+  border: none;
+  padding: 1.5rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tool-button:hover {
+  background-color: var(--hover-color);
+  transform: translateY(-4px);
+}
