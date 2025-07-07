@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>공부꾸키</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공부꾸키</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 로딩 스피너 -->
+  <!-- 로딩 화면 -->
   <div id="loader">
     <div class="spinner"></div>
   </div>
 
-  <!-- 실제 콘텐츠 -->
+  <!-- 본문 -->
   <div id="content" style="display:none;">
     <header>
       <h1>공부꾸키</h1>
       <nav>
-        <a href="pomodoro.html">🕒 뽀모도로</a>
-        <a href="ai.html">🤖 AI</a>
-        <a href="focus.html">🎯 집중</a>
-        <a href="habit.html">🌱 해빗</a>
-        <a href="todo.html">📝 투두</a>
-        <a href="book.html">📚 책</a>
+        <a href="pomodoro.html" aria-label="뽀모도로 타이머">🕒 뽀모도로</a>
+        <a href="ai.html" aria-label="AI 어시스턴트">🤖 AI</a>
+        <a href="focus.html" aria-label="집중 타이머">🎯 집중</a>
+        <a href="habit.html" aria-label="해빗 트래커">🌱 해빗</a>
+        <a href="todo.html" aria-label="투두 다이어리">📝 투두</a>
+        <a href="book.html" aria-label="북 트래커">📚 책</a>
       </nav>
       <button id="darkToggle" aria-label="다크모드 토글">🌙</button>
     </header>
@@ -38,13 +38,12 @@
   </div>
 
 <script>
-  // 로딩 후 콘텐츠 보이기 + 다크모드 상태 복원
   window.addEventListener("load", () => {
     const loader = document.getElementById("loader");
     const content = document.getElementById("content");
     const toggle = document.getElementById("darkToggle");
 
-    // 다크모드 세팅 복원
+    // 다크모드 상태 복원
     if (localStorage.getItem("theme") === "dark") {
       document.body.classList.add("dark");
       toggle.textContent = "☀️";
@@ -52,7 +51,7 @@
       toggle.textContent = "🌙";
     }
 
-    // 로딩 화면 숨기고 콘텐츠 보여줌, 부드럽게 페이드인
+    // 로딩 후 본문 보여주기
     setTimeout(() => {
       loader.style.display = "none";
       content.style.display = "block";
@@ -63,7 +62,7 @@
       }, 10);
     }, 1200);
 
-    // 다크모드 토글 버튼 이벤트
+    // 다크모드 토글 이벤트
     toggle.addEventListener("click", () => {
       document.body.classList.toggle("dark");
       const isDark = document.body.classList.contains("dark");
