@@ -7,19 +7,18 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 로딩 애니메이션 -->
   <div id="loading-overlay">
     <div class="spinner"></div>
   </div>
 
-  <!-- 상단 툴바 -->
   <header>
     <h1>📚 공부꾸키</h1>
-    <nav></nav>
+    <nav>
+      <!-- 툴바에 추가 링크가 있다면 여기에 -->
+    </nav>
     <button id="darkToggle" aria-label="다크모드 토글">🌙</button>
   </header>
 
-  <!-- 메인 영역 -->
   <main class="home-main">
     <h2>✨ 필요한 도구를 선택해보세요!</h2>
     <div class="button-container">
@@ -32,7 +31,6 @@
     </div>
   </main>
 
-  <!-- 다크모드 및 로딩 스크립트 -->
   <script>
     // 다크모드 로드 시 적용
     const toggle = document.getElementById("darkToggle");
